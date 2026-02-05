@@ -178,9 +178,18 @@ public class PoligonosApp extends Application {
     /// Desta forma, basta retornar este resultado como uma nova lista de [Double].
     ///
     /// @return uma lista contendo o perímetro de cada polígono
-    protected List<Double> perimetros(){
-        // TODO Apague esta linha e a próxima e implemente seu código
-        return List.of();
-    }
+   protected List<Double> perimetros() {
+    return pontosPoligonos.stream()
+            .flatMap(lista -> {
+                Point ultimoPonto = lista.get(lista.size() - 1);
+                
+                Point resultadoFinal = lista.stream()
+                        .reduce(new Point(ultimoPonto.x(), ultimoPonto.y()), 
+                                (pAnterior, pAtual) -> new Point(pAnterior, pAtual));
+
+                return List.of(resultadoFinal.distance()).stream();
+            })
+            .toList();
+}
 }
 
