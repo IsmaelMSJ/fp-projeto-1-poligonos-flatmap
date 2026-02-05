@@ -82,16 +82,17 @@ public class PoligonosApp extends Application {
         final var root = new Pane();
         final var scene = new Scene(root, 800, 600);
 
-        for (final var listaPontos : pontosPoligonos) {
+        // Refatorado para usar Stream e forEach
+        pontosPoligonos.forEach(listaPontos -> {
             final var poligono = new Polygon();
-            for (final Point point : listaPontos) {
-                poligono.getPoints().addAll(point.x(), point.y());
-            }
+            
+            // Adiciona cada coordenada (x, y) ao polígono
+            listaPontos.forEach(p -> poligono.getPoints().addAll(p.x(), p.y()));
 
             poligono.setFill(Color.BLUE);
             poligono.setStroke(Color.BLACK);
             root.getChildren().add(poligono);
-        }
+        });
 
         final List<String> perimetros = perimetros().stream().map(p -> String.format("%.1f", p)).toList();
         final var label1 = newLabel("Perímetro dos Polígonos: " + perimetros, 500);
